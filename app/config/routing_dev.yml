@@ -13,9 +13,10 @@ _configurator:
 _main:
     resource: routing.yml
 
-# AcmeDemoBundle routes (to be removed)
-_acme_demo:
-    resource: "@AcmeDemoBundle/Resources/config/routing.yml"
+_welcome:
+    path:      /
+    defaults:  { _controller: EmployeeBundle:Employee:index }
 
 _employee:
+    prefix: /
     resource: "@EmployeeBundle/Resources/config/routing.yml"

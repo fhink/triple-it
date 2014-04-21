@@ -67,3 +67,26 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# Memcached Configuration
+lsw_memcache:
+    session:
+        client: default
+        prefix: "session_"
+        ttl: 7200
+    clients:
+        default:
+            hosts:
+              - { dsn: localhost, port: 11211 }
+    doctrine:
+        metadata_cache:
+            client: default
+            entity_manager: default          # the name of your entity_manager connection
+            document_manager: default        # the name of your document_manager connection
+        result_cache:
+            client: default
+            entity_manager: [default]        # you may specify multiple entity_managers
+            prefix: "result_"                # you may specify a prefix for the entries
+        query_cache:
+            client: default
+            entity_manager: default

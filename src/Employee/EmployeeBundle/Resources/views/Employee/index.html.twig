@@ -1,0 +1,76 @@
+{% extends "EmployeeBundle::layout.html.twig" %}
+
+{% block title 'Employee overview' %}
+
+{% block body %}
+    <div class="col-sm-6 col-lg-3 col-md-4">
+        <ul class="nav tab-menu nav-tabs" id="myTab">
+            {% for platform in employeesGrouped|keys %}
+                <li {% if loop.first %}class="active"{% endif %}><a href="#{{ platform }}">{{ platform }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <div id="myTabContent" class="tab-content">
+            {% for platform, employees in employeesGrouped %}
+                <div class="tab-pane {% if loop.first %}active{% endif %}" id="{{ platform }}">
+                    {% for employee in employees %}
+                        <div class="smallchart blue box">
+
+                            <div class="title">{{ employee.firstName }} {{ employee.lastName }}</div>
+                            <div class="content">
+
+                                {% if employee.photoUrl %}
+                                    <img src="data:image/png;base64,{{ employee.photoData }}"
+                                         width="80" height="80" alt="{{ employee.firstName }}{{ employee.lastName }}">
+                                {% else %}
+                                    <img src="{{ asset('bundles/employee/images/employee-thumbnail.jpg') }}" width="80"
+                                         height="80" alt="{{ employee.firstName }}{{ employee.lastName }}">
+                                {% endif %}
+
+                            </div>
+                            <div class="value">
+                                <a href="/employee/view/{{ employee.emailAddress }}"
+                                   title="View details of {{ employee.firstName }} {{ employee.lastName }}"
+                                   class="ti-js-ajax text-primary">View details</a>
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-9 col-md-8">
+        <div id="detailed-view"></div>
+    </div>
+
+    {% verbatim %}
+    <script type="text/html" id="detailedView">
+        <div class="col-xs-12 well">
+            <img src="{{ photoUrl }}" width="80" height="80" alt="{{ firstName }} {{ lastName }}">
+
+            <h3>General Information</h3>
+
+            <ul class="profile-details">
+                <li>
+                    <div><i class="fa fa-user"></i> name</div>
+                    {{ firstName }} {{ lastName }}
+                </li>
+                <li>
+                    <div><i class="fa fa-envelope"></i> e-mail</div>
+                    {{ emailAddress }}
+                </li>
+                <li>
+                    <div><i class="fa fa-building-o"></i> platform</div>
+                    {{ platform }}
+                </li>
+            </ul>
+        </div>
+    </script>
+    {% endverbatim %}
+{% endblock %}
+
+{% block js %}
+<script src="{{ asset('bundles/employee/js/overview.js') }}"></script>
+{% endblock %}

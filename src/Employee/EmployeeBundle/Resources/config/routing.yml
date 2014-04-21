@@ -1,0 +1,7 @@
+_overview:
+    path: /employee/
+    defaults: { _controller: EmployeeBundle:Employee:index }
+
+_detail:
+    path: /employee/view/{email}
+    defaults: { _controller: EmployeeBundle:Employee:detail }

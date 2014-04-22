@@ -1,0 +1,23 @@
+<VirtualHost *:80>
+    ServerName dev.triple.it
+    ServerAlias www.dev.triple.it
+
+    DocumentRoot /var/www/tripleit/web
+    <Directory /var/www/tripleit/web>
+	Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+        <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^(.*)$ /app_dev.php [QSA,L]
+        </IfModule>
+    </Directory>
+
+    ErrorLog /var/log/apache2/tripleit_error.log
+    CustomLog /var/log/apache2/tripleit_access.log combined
+</VirtualHost>
